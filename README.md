@@ -1,7 +1,7 @@
 Meetup: spark-scala
 ========================
 
-Demo of Spark given in Meetup organised by # [Knoldus Software LLP](http://www.knoldus.com/home.knol).
+Demo of Spark given in Meetup organised by [Knoldus Software LLP](http://www.knoldus.com/home.knol).
 
 -----------------------------------------------------------------------
 ###Development environment
