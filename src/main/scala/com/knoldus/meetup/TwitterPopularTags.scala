@@ -34,11 +34,11 @@ object TwitterPopularTags extends App {
   twitter.setOAuthAccessToken(new AccessToken(accessToken, accessTokenSecret))
 
   // Setting up streaming context with a window of 10 seconds
-  val conf = new SparkConf().setMaster("local").setAppName("firstSparkApp") // run locally with enough threads
+  val conf = new SparkConf().setMaster("local[4]").setAppName("twitterPopularTags") // run locally with enough threads
   val ssc = new StreamingContext(conf, Seconds(10))
   
   // Calculating popular hashtags over a window of 10 seconds
-  val filters = Seq("#CWC15")
+  val filters = Seq("#AprilFools")
   val stream = TwitterUtils.createStream(ssc, Option(twitter.getAuthorization()), filters)
   val hashTags = stream.flatMap(status => status.getText.split(" ").filter(_.startsWith("#")))
   val topCounts10 = hashTags.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(10))
@@ -49,7 +49,7 @@ object TwitterPopularTags extends App {
   topCounts10.foreachRDD(rdd => {
     val topList = rdd.take(5)
     println("\nPopular topics in last 10 seconds (%s total):".format(rdd.count()))
-    topList.foreach { case (count, tag) => println("%s (%s tweets)".format(tag, count)) }
+    topList.foreach { case (count, tag) => println("%s (%s)".format(tag, count)) }
   })
 
   // Start Twitter stream
